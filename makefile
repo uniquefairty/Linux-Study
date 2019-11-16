@@ -1,6 +1,5 @@
 test:test.c
-	gcc test.c -o test -g
-
+	gcc test.c -o test 
 .PHONY:clean
-clean:
+	clean:
 	rm test

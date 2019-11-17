@@ -13,6 +13,8 @@ int main()
   {
     buf[i]='#';
     printf("[%d%%][%c][%s]\r",i,label[i%4],buf);
+    //\n换行
+    //\r回车
     fflush(stdout);
     //单位是秒
     usleep(100*1000);

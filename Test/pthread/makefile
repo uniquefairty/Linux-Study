@@ -1,3 +1,5 @@
+tickets:tickets.c
+	gcc $^ -o $@ -lpthread
 pthread_detach:pthread_detach.c
 	gcc $^ -o $@ -lpthread
 pthread2:pthread2.c

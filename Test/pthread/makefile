@@ -1,3 +1,5 @@
+pthread_detach:pthread_detach.c
+	gcc $^ -o $@ -lpthread
 pthread2:pthread2.c
 	gcc $^ -o $@ -lpthread
 Create_pthread:Create_pthread.c

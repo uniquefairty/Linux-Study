@@ -1,3 +1,5 @@
+Cond:Cond.c
+	gcc $^ -o $@ -lpthread
 tickets:tickets.c
 	gcc $^ -o $@ -lpthread
 pthread_detach:pthread_detach.c

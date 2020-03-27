@@ -1,3 +1,5 @@
+BlockQue:BlockQue.c
+	g++ $^ -o $@ -lpthread
 Cond:Cond.c
 	gcc $^ -o $@ -lpthread
 tickets:tickets.c

@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include "httplib.h"
-#include <iostream>
 
 using namespace httplib;
 
@@ -14,16 +13,12 @@ int main()
 {
     Server svr;
     //svr.Get("/",func);
-    svr.Get("/aaa",[](const Request& req,Response& resp)
+    svr.Get("/",[](const Request& req,Response& resp)
             {
-            std::cout<<"haha"<<std::endl;
             (void)req;
-            std::cout<<"进入函数"<<std::endl;
             resp.set_content("<html>linux-haha</html>","123");
             }
             );
-    std::cout<<"开始监听"<<std::endl;
-    svr.listen("192.168.2.136",19090);
-    std::cout<<"监听结束"<<std::endl;
+    svr.listen("192.168.2.136",9090);
     return 0;
 }

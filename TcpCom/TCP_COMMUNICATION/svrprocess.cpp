@@ -1,5 +1,16 @@
 #include "tcpsvr.hpp"
+#include <signal.h>
+#include <sys/wait.h>
 
+void sigcb(int signo)
+{
+    (void)signo;
+    while(1)
+    {
+       waitpid(-1,NULL,WNOHANG);
+
+    }
+}
 int main(int argc,char* argv[])
 {
     if(argc!=3)
@@ -7,6 +18,10 @@ int main(int argc,char* argv[])
         printf("./svrprocess [ip] [port]");
         return 0;
     }
+
+    signal(SIGCHLD,sigcb);
+    //这个进程退出时，使用回调函数进行进程等待
+    //就不会出现进程为僵尸状态
 
     std::string ip=argv[1];
     uint16_t port=atoi(argv[2]);

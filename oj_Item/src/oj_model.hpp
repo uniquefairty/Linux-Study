@@ -42,8 +42,8 @@ class OjModel
         {
             //使用C++文件中的文件流来加载文件，并获取文件当中的内容 
             //iostream处理控制台IO fstream处理命名文件的 stringstream完成内存中对象的IO
-            //ostream:output文件流，文件当中写
-            //istream:input文件流，从文件当中读
+            //ofstream:output文件流，文件当中写
+            //ifstream:input文件流，从文件当中读
             //在定义istream对象的时候，就可以指定打开哪一个文件，和文件进行绑定
             //ifstream(const char* filename,ios_base::openmode mode=ios_base::in);//in 以读的方式打开 out:以写的方式打开
             //void open(const char*filename,ios_base::penmode mode=ios_base::in);
@@ -61,7 +61,7 @@ class OjModel
                 //1.需要切割字符串
                 std::vector<std::string> vec;
                 
-                StringTools::Split(line,"\t",&vec);
+                StringTools::Split(line," ",&vec);
                 if(vec.size()!=4)
                 {
                     continue;

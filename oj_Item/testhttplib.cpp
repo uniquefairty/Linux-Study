@@ -23,7 +23,7 @@ int main()
             }
             );
     std::cout<<"开始监听"<<std::endl;
-    svr.listen("192.168.2.136",19090);
+    svr.listen("192.168.2.137",19090);
     std::cout<<"监听结束"<<std::endl;
     return 0;
 }

@@ -1,5 +1,10 @@
+#include <stdio.h>
+#include <string>
+#include <string.h>
+
 #include "httplib.h"
 #include "oj_model.hpp"
+#include "oj_view.hpp"
 
 int main()
 {
@@ -21,13 +26,17 @@ int main()
             std::vector<Questions> ques;
             ojmodel.GetAllQuestions(&ques);
             //<html>id.name start</html>
-            char buf[10240]={'\0'};
-            snprintf(buf,sizeof(buf)-1,"<html>%s.%s %s</html>",ques[0].id_.c_str(),ques[0].name_.c_str(),ques[0].star_.c_str());
+            //char buf[10240]={'\0'};
+            //snprintf(buf,sizeof(buf)-1,"<html>%s.%s %s</html>",ques[0].id_.c_str(),ques[0].name_.c_str(),ques[0].star_.c_str());
 
-            std::string html;
-            html.assign(buf,strlen(buf));
+            //std::string html;
+            //html.assign(buf,strlen(buf));
             
+            //stringstream ss;
             //想使用模板技术去html页面
+            
+            std::string html;
+            OjView::ExpandAllQuestionshtml(&html,ques);
             resp.set_content(html,"text/html;charset=UTF-8");
             });
     svr.listen("0.0.0.0",19999);

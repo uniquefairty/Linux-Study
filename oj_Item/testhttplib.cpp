@@ -18,12 +18,9 @@ int main()
             {
             std::cout<<"haha"<<std::endl;
             (void)req;
-            std::cout<<"进入函数"<<std::endl;
             resp.set_content("<html>linux-haha</html>","123");
             }
             );
-    std::cout<<"开始监听"<<std::endl;
-    svr.listen("192.168.2.137",19090);
-    std::cout<<"监听结束"<<std::endl;
+    svr.listen("192.168.2.138",19090);
     return 0;
 }

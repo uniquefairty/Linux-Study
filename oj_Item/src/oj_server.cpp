@@ -39,6 +39,13 @@ int main()
             OjView::ExpandAllQuestionshtml(&html,ques);
             resp.set_content(html,"text/html;charset=UTF-8");
             });
+    //正则表达式
+    //    \b单词的分界  hi  history 
+
+    svr.Get("/question/2",[&ojmodel](const Request& req,Response& resp){
+            std::string html="1";
+            resp.set_content(html,"text/html;charset=UTF-8");
+            });
     svr.listen("0.0.0.0",19999);
     return 0;
 }

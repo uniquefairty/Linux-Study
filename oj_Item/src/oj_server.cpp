@@ -5,6 +5,7 @@
 #include "httplib.h"
 #include "oj_model.hpp"
 #include "oj_view.hpp"
+#include "oj_log.hpp"
 
 int main()
 {
@@ -37,12 +38,16 @@ int main()
             
             std::string html;
             OjView::ExpandAllQuestionshtml(&html,ques);
+            LOG(INFO,html);
             resp.set_content(html,"text/html;charset=UTF-8");
             });
     //正则表达式
-    //    \b单词的分界  hi  history 
-
-    svr.Get("/question/2",[&ojmodel](const Request& req,Response& resp){
+    //    \b:单词的分界  
+    //    *:匹配任意字符串
+    //    \d:匹配一个数字
+    //源码转义：特殊字符就按照特殊字符字面源码来编译
+    //     R"(str)"
+    svr.Get(R"(/question/\d)",[&ojmodel](const Request& req,Response& resp){
             std::string html="1";
             resp.set_content(html,"text/html;charset=UTF-8");
             });

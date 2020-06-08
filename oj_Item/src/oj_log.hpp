@@ -54,13 +54,14 @@ enum LogLevel
     DEBUG
 };
 
-inline void  Log(LogLevel lev,const char* file,int line,std::string& logmsg)
+inline std::ostream&  Log(LogLevel lev,const char* file,int line,const std::string& logmsg)
 {
     std::string level_info=Level[lev];
     std::string TimeStamp;
     LogTime::GetTimeStamp(&TimeStamp);
     //[时间 日志等级 文件:行号] 具体的日志信息
-    std::cout<<"["<<TimeStamp<<" "<<level_info<<" "<<file<<":"<<line<<"]"<<logmsg<<std::endl;
+    std::cout<<"["<<TimeStamp<<" "<<level_info<<" "<<file<<":"<<line<<"]"<<logmsg;
+    return std::cout;
 }
 
 #define LOG(lev,msg) Log(lev,__FILE__,__LINE__,msg)

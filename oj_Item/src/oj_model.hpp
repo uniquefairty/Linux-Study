@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <fstream>
 #include "tools.hpp"
+#include "oj_log.hpp"
 
 //试题id 试题名称 试题路径 试题难度
 typedef struct Questions
@@ -78,11 +79,51 @@ class OjModel
             return true;
 
         }
+
+        bool GetOneQuestion(std::string& id,std::string* desc,std::string* header)
+        {
+            //1.根据id去查找对应题目信息，最重要的就是这个题目在哪里
+            auto iter=model_map_.find(id);
+            if(iter==model_map_.end())
+            {
+                LOG(ERROR,"Not Found Question id is")<<id<<std::endl;
+                return false;
+            }
+
+            //iter->second.path_;+文件名称（desc.txtheader.cpp)
+
+            //加载具体的单个题目信息，从保存的路径之中加载
+            //从具体的题目文件当中去获取两部分信息，描述，header头
+            
+            int ret=FileOper::ReadDataFromFile(DescPath(iter->second.path_),desc);
+            if(ret==-1)
+            {
+                LOG(ERROR,"Read desc failed")<<std::endl;
+                return false;
+            }
+
+            ret=FileOper::ReadDataFromFile(HeaderPath(iter->second.path_),header); 
+            if(ret==-1)
+            {
+                LOG(ERROR,"Read desc failed")<<std::endl;
+                return false;
+            }
+            return true;
+        }
+    private:
+        std::string DescPath(const std::string& ques_path)
+        {
+            return ques_path+"desc.txt";
+        }
+        std::string HeaderPath(const std::string& ques_path)
+        {
+            return ques_path+"header.cpp";
+        }
+
+
     private:
         //map<key(id),value(TestQues)> model_map;红黑树 有序的树形结构，查询的效率不高
         //unordered_map<key,value>   //哈希表-无序-查询效率高，基本上就是常数时间完成的
         std::unordered_map<std::string ,Questions> model_map_;
-
-        
 
 };

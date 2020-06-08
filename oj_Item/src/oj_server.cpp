@@ -38,7 +38,7 @@ int main()
             
             std::string html;
             OjView::ExpandAllQuestionshtml(&html,ques);
-            LOG(INFO,html);
+            //LOG(INFO,html);
             resp.set_content(html,"text/html;charset=UTF-8");
             });
     //正则表达式
@@ -47,10 +47,17 @@ int main()
     //    \d:匹配一个数字
     //源码转义：特殊字符就按照特殊字符字面源码来编译
     //     R"(str)"
-    svr.Get(R"(/question/\d)",[&ojmodel](const Request& req,Response& resp){
+    svr.Get(R"(/question/\d+)",[&ojmodel](const Request& req,Response& resp){
+            //question/1
+            //1.去试题模块去查找对应的题号的具体信息
+            //    map (序号 名称 题目的地址 难度)
+            //2.在题目路径下去加载单个题目描述信息，进行组织 返回浏览器
             std::string html="1";
             resp.set_content(html,"text/html;charset=UTF-8");
             });
+    LOG(INFO,"listen in 0.0.0.0:19999");
+    LOG(INFO,"Server ready");
+    //listen会阻塞
     svr.listen("0.0.0.0",19999);
     return 0;
 }

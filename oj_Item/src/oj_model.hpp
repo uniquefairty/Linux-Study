@@ -4,11 +4,12 @@
 #include <string>
 #include <algorithm>
 #include <fstream>
+
 #include "tools.hpp"
 #include "oj_log.hpp"
 
 //试题id 试题名称 试题路径 试题难度
-typedef struct Questions
+typedef struct Question
 {
     std::string id_;
     std::string name_;
@@ -23,7 +24,7 @@ class OjModel
         {
             LoadQuestions("./config_oj.cfg");
         }
-        bool GetAllQuestions(std::vector<Questions>* ques)
+        bool GetAllQuestions(std::vector<Question>* ques)
         {
             for(const auto& kv:model_map_)
             {
@@ -32,10 +33,44 @@ class OjModel
             
             //针对内置类型进行操作
             //std::greater降序排序 std::less 升序排序
-            std::sort(ques->begin(),ques->end(),[](const Questions& l,const Questions& r){
+            std::sort(ques->begin(),ques->end(),[](const Question& l,const Question& r){
                     return std::atoi(l.id_.c_str()) <std::atoi(r.id_.c_str());
                     });
         return true;
+        }
+         bool GetOneQuestion(const std::string& id,std::string* desc,std::string* header,Question* ques)
+        {
+            //1.根据id去查找对应题目信息，最重要的就是这个题目在哪里
+            auto iter=model_map_.find(id);
+            if(iter==model_map_.end())
+            {
+                LOG(ERROR,"Not Found Question id is")<<id<<std::endl;
+                return false;
+            }
+
+            //iter->second.path_;+文件名称（desc.txtheader.cpp)
+            *ques=iter->second;
+            //加载具体的单个题目信息，从保存的路径之中加载
+            //从具体的题目文件当中去获取两部分信息，描述，header头
+            
+            std::string str1=DescPath(iter->second.path_);
+            
+            int ret=FileOper::ReadDataFromFile(str1,desc);
+            if(ret==-1)
+            {
+                LOG(ERROR,"Read desc failed")<<std::endl;
+                return false;
+            }
+
+
+            str1=HeaderPath(iter->second.path_);
+            ret=FileOper::ReadDataFromFile(str1,header); 
+            if(ret==-1)
+            {
+                LOG(ERROR,"Read desc failed")<<std::endl;
+                return false;
+            }
+            return true;
         }
 
     private:
@@ -68,7 +103,7 @@ class OjModel
                     continue;
                 }
                 //2.切割后的内容保存到unordered_map
-                Questions ques;
+                Question ques;
                 ques.id_=vec[0];
                 ques.name_=vec[1];
                 ques.path_=vec[2];
@@ -80,36 +115,6 @@ class OjModel
 
         }
 
-        bool GetOneQuestion(std::string& id,std::string* desc,std::string* header)
-        {
-            //1.根据id去查找对应题目信息，最重要的就是这个题目在哪里
-            auto iter=model_map_.find(id);
-            if(iter==model_map_.end())
-            {
-                LOG(ERROR,"Not Found Question id is")<<id<<std::endl;
-                return false;
-            }
-
-            //iter->second.path_;+文件名称（desc.txtheader.cpp)
-
-            //加载具体的单个题目信息，从保存的路径之中加载
-            //从具体的题目文件当中去获取两部分信息，描述，header头
-            
-            int ret=FileOper::ReadDataFromFile(DescPath(iter->second.path_),desc);
-            if(ret==-1)
-            {
-                LOG(ERROR,"Read desc failed")<<std::endl;
-                return false;
-            }
-
-            ret=FileOper::ReadDataFromFile(HeaderPath(iter->second.path_),header); 
-            if(ret==-1)
-            {
-                LOG(ERROR,"Read desc failed")<<std::endl;
-                return false;
-            }
-            return true;
-        }
     private:
         std::string DescPath(const std::string& ques_path)
         {
@@ -124,6 +129,6 @@ class OjModel
     private:
         //map<key(id),value(TestQues)> model_map;红黑树 有序的树形结构，查询的效率不高
         //unordered_map<key,value>   //哈希表-无序-查询效率高，基本上就是常数时间完成的
-        std::unordered_map<std::string ,Questions> model_map_;
+        std::unordered_map<std::string ,Question> model_map_;
 
 };

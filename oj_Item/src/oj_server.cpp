@@ -63,7 +63,7 @@ int main()
             ojmodel.GetOneQuestion(req.matches[1].str(),&desc,&header,&ques);
 
             //3.进行组织 返回浏览器
-            std::string html=html;
+            std::string html;
             OjView::ExpandOneQuestion(ques,desc,header,&html);
             resp.set_content(html,"text/html;charset=UTF-8");
             });

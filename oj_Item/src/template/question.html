@@ -4,11 +4,15 @@
     </head>
     <body>
         <!--描述-->
-        <div> {{id}}.{name}} {{star}}</div>
+        <div> {{id}}.{{name}} {{star}}</div>
         <div>{{desc}}</div>
         <!--代码的编辑框-->
         <div>
-            {{header}}
+            <form action="https:www.baidu.con" method="POST">
+                <textarea name="name" rows=20 cols=100>{{header}}</textarea>
+                <br>
+                <input type="submit" formenctype="appliaction/json" value="Submit">
+            </form>
         </div>
     </body>
 </html>

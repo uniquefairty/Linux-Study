@@ -39,6 +39,19 @@ class FileOper
             file.close();
             return 0;
         }
+
+        static int WriteDataToFile(const std::string&filename,const std::string& Data)
+        {
+            std::ofstream file(filename.c_str());
+            if(!file.is_open())
+            {
+                LOG(ERROR,"Open file failed")<<filename<<std::endl;
+                return -1;
+            }
+            file.write(Data.data(),Data.size());
+            file.close();
+            return 0;
+        }
 };
 
 class UrlUtil

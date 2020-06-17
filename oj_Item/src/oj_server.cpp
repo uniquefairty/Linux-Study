@@ -6,6 +6,7 @@
 #include "oj_model.hpp"
 #include "oj_view.hpp"
 #include "oj_log.hpp"
+#include "compile.hpp"
 
 int main()
 {
@@ -79,6 +80,15 @@ int main()
                LOG(INFO,"code ")<<pr.second<<std::endl;
             }
             //2.编译&运行
+            //2.1 需要给提交的代码增加头文件，测试用例，main函数
+            std::string code;
+           ojmodel.SplicingCode(pram["code"],req.matches[1].str(),&code);
+           //LOG(INFO,"code")<<code<<std::endl;
+           Json::Value req_json;
+           req_json["code"]=code;
+           //req_json["stdin"]=""
+           Json::value Resp_json;
+           Compiler::CompilerAndRun(req_json,&Resp_json);
             //3.构造响应，json
             std::string html="1";
             resp.set_content(html,"text/html;charset=   utf-8");

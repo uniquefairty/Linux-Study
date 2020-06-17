@@ -87,7 +87,7 @@ int main()
            Json::Value req_json;
            req_json["code"]=code;
            //req_json["stdin"]=""
-           Json::value Resp_json;
+           Json::Value Resp_json;
            Compiler::CompilerAndRun(req_json,&Resp_json);
             //3.构造响应，json
             std::string html="1";

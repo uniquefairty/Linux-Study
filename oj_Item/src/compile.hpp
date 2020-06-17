@@ -34,8 +34,10 @@ class Compiler
                 return;
             }
            //3.编译
-           if(!Compile())
+           if(!Compile(tmp_filename))
            {
+               LOG(ERROR,"Cmpile Error")<<std::endl;
+               return;
 
            }
            //4.运行
@@ -50,7 +52,7 @@ class Compiler
         static std::string WriteTmpFile(const std::string& code)
         {
             //1.组织文件名称，组织文件的前缀名称，用来区分源文件，可执行文件是同一组数据
-                std::string tmp_filename="tmp_"+std::to_string(LogTime::GetTimeStamp());
+                std::string tmp_filename="/tmp_"+std::to_string(LogTime::GetTimeStamp());
             //写文件
                 int ret=FileOper::WriteDataToFile(SrcPath(tmp_filename),code);
                 if(ret<0)
@@ -89,6 +91,9 @@ class Compiler
             snprintf(Command[2],49,"%s","-o");
             snprintf(Command[3],49,"%s",ExePath(filename).c_str());
             snprintf(Command[4],49,"%s","-std=c++11");
+            snprintf(Command[5],49,"%s","-D");
+            snprintf(Command[6],49,"%s","CompileOnline");
+            Command[7]=NULL;
             //2.创建一个子进程
             //2.1父进程-->等待子进程推出
             //2.2子进程-->进程程序替换-->g++
@@ -103,10 +108,18 @@ class Compiler
             {
                 //child
                 int fd=open(ErrorPath(filename).c_str(),O_CREAT|O_RDWR,0664);
+                if(fd<0)
+                {
+                    LOG(ERROR,"open compile erroefile failed")<<ErrorPath(filename)<<std::endl;
+                    exit(1);
+                }
+
                 //重定向
                 dup2(fd,2);
                 //程序替换
                 execvp(Command[0],Command);
+                perror("execvp");
+                LOG(ERROR,"execvp failed")<<std::endl;
                 exit(0);
             }
             else

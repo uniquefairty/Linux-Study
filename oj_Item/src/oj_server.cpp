@@ -89,8 +89,12 @@ int main()
            //req_json["stdin"]=""
            Json::Value Resp_json;
            Compiler::CompilerAndRun(req_json,&Resp_json);
-            //3.构造响应，json
-            std::string html="1";
+            //3.构造响应
+            const std::string errorno=Resp_json["errorno"].asString();
+            const std::string reason=Resp_json["reason"].asString();
+            const std::string stdout_reason=Resp_json["stdout"].asString();
+            std::string html;
+            OjView::ExpandReason(errorno,reason,stdout_reason,&html);
             resp.set_content(html,"text/html;charset=   utf-8");
             });
     LOG(INFO,"listen in 0.0.0.0:19999")<<std::endl;

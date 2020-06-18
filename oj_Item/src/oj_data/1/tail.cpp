@@ -14,7 +14,7 @@
 void Test1()
 {
     bool ret=Solution().isPalindrome(121);
-    if(!ret)
+    if(ret)
     {
         std::cout<<"Test1 ok!"<<std::endl;
     }

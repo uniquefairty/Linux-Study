@@ -1,11 +1,27 @@
+#if 0
 #pragma once
 #include <cstdio>
 #include <string.h>
-#include <iostream>
 #include <unistd.h>
 #include <stdlib.h>
+#include <cassert>
+#include <iostream>
 #include <sys/types.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#endif
+
+#pragma once                                                                                                                      
+#include <iostream>          
+#include <stdio.h>                    
+#include <string.h>                                      
+#include <stdlib.h>                     
+#include <cassert>
+#include <string>         
+
+#include <unistd.h>            
+#include <sys/socket.h>      
 #include <netinet/in.h>
 #include <arpa/inet.h>
 
@@ -39,7 +55,6 @@ class UdpSocket
             addr.sin_port=htonl(port);//两个字节，牵扯到大小端问题
             //in_addr_t inet_addr(const char *cp);
             addr.sin_addr.s_addr=inet_addr(ip.c_str());  
-
             int ret=bind(_fd,(struct socketaddr*)&addr,sizeof(addr));
             if(ret<0)
             {
